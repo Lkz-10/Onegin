@@ -1,32 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "OutputColours.h"
 
 const int nlines = 14, line_len = 42;
 
+void sort_text(char text[nlines][line_len], int* inds);
+int my_strcmp(const char* s1, const char* s2);
+
 void scan_text(char text[nlines][line_len]);
-
-void lines_sort(char text[nlines][line_len], int* inds);
-
-void fill(int* inds);
-
 void print_text(char text[][line_len], int* inds);
 
-int my_strcmp(const char* s1, const char* s2);
+void fill(int* inds);
 
 void swap(int* a, int* b);
 
 int main()
 {
     char text[nlines][line_len] = {};
-
     scan_text(text);
 
     int inds[nlines] = {};
     fill(inds);
 
-    lines_sort(text, inds);
+    sort_text(text, inds);
 
     print_text(text, inds);
 
@@ -52,7 +50,7 @@ void scan_text(char text[nlines][line_len])
     fclose(ptr_scan);
 }
 
-void lines_sort(char text[nlines][line_len], int* inds)
+void sort_text(char text[nlines][line_len], int* inds)
 {
     int bound = nlines - 1;
 
@@ -68,14 +66,36 @@ void lines_sort(char text[nlines][line_len], int* inds)
 
 int my_strcmp(const char* s1, const char* s2)
 {
-    int i = 0;
+    int curr_char1 = line_len - 1, curr_char2 = line_len - 1;
 
-    while (i < line_len && ((int) s1[i]) == ((int) s2[i])) {
-        i++;
+    while (curr_char1 >= 0 && !isalpha(s1[curr_char1])) {
+        curr_char1--;
     }
 
-    if (i == line_len) return 0;
-    return ((int) s1[i]) - ((int) s2[i]);
+    while (curr_char2 >= 0 && !isalpha(s2[curr_char2])) {
+        curr_char2--;
+    }
+
+    if (curr_char1 < 0 || curr_char2 < 0) {
+        fprintf(stderr, RED "Error: empty line!\n" COLOUR_RESET);
+        exit(1);
+    }
+
+    while (curr_char1 >= 0 && curr_char2 >= 0) {
+        if (s1[curr_char1] > s2[curr_char2]) return  1;
+        if (s2[curr_char2] > s1[curr_char1]) return -1;
+
+        --curr_char1;
+        --curr_char2;
+
+        while (curr_char1 >= 0 && !isalpha(s1[curr_char1])) curr_char1--;
+        while (curr_char2 >= 0 && !isalpha(s2[curr_char2])) curr_char2--;
+    }
+
+    if (curr_char1 < 0 && curr_char2 < 0) return 0;
+    if (curr_char2 < 0) return 1;
+
+    return -1;
 }
 
 void print_text(char text[][line_len], int* inds)
