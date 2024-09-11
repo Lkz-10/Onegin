@@ -3,10 +3,15 @@
 
 #include "OutputColours.h"
 
-const int lines = 14, line_len = 42;
+const int nlines = 14, line_len = 42;
 
-void sort_text();
-void lines_sort(char text[lines][line_len]);
+void scan_text(char text[nlines][line_len]);
+
+void lines_sort(char text[nlines][line_len], int* inds);
+
+void fill(int* inds);
+
+void print_text(char text[][line_len], int* inds);
 
 int my_strcmp(const char* s1, const char* s2);
 
@@ -14,10 +19,21 @@ void swap(int* a, int* b);
 
 int main()
 {
-    sort_text();
+    char text[nlines][line_len] = {};
+
+    scan_text(text);
+
+    int inds[nlines] = {};
+    fill(inds);
+
+    lines_sort(text, inds);
+
+    print_text(text, inds);
+
+    return 0;
 }
 
-void sort_text()
+void scan_text(char text[nlines][line_len])
 {
     FILE* ptr_scan = fopen("Onegin_text.txt", "r");
 
@@ -26,9 +42,7 @@ void sort_text()
         exit(1);
     }
 
-    char text[lines][line_len] = {};
-
-    for (int i = 0; i < lines; ++i) {
+    for (int i = 0; i < nlines; ++i) {
         if (fgets(text[i], line_len, ptr_scan) == NULL) {
             fprintf(stderr, RED "Error while reading %d line\n" COLOUR_RESET, i+1);
             exit(1);
@@ -36,18 +50,11 @@ void sort_text()
     }
 
     fclose(ptr_scan);
-
-    lines_sort(text);
 }
 
-void lines_sort(char text[lines][line_len])
+void lines_sort(char text[nlines][line_len], int* inds)
 {
-    int inds[lines] = {};
-    for (int i = 0; i < lines; ++i) {
-        inds[i] = i;
-    }
-
-    int bound = lines - 1;
+    int bound = nlines - 1;
 
     while (bound > 0) {
         for (int j = 0; j < bound; j++) {
@@ -56,10 +63,6 @@ void lines_sort(char text[lines][line_len])
             }
         }
         --bound;
-    }
-
-    for (int i = 0; i < lines; i++) {
-        printf("%s", text[inds[i]]);
     }
 }
 
@@ -73,6 +76,20 @@ int my_strcmp(const char* s1, const char* s2)
 
     if (i == line_len) return 0;
     return ((int) s1[i]) - ((int) s2[i]);
+}
+
+void print_text(char text[][line_len], int* inds)
+{
+    for (int i = 0; i < nlines; i++) {
+        printf("%s", text[inds[i]]);
+    }
+}
+
+void fill(int* inds)
+{
+    for (int i = 0; i < nlines; ++i) {
+        inds[i] = i;
+    }
 }
 
 void swap(int* a, int* b)
