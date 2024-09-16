@@ -1,13 +1,35 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <assert.h>
 
 #include "Sorting.h"
 #include "OutputColours.h"
 
-void sort_text(const char text[][line_len], int* inds)
+void sort_text_adds(TEXTDATA* text_data)
 {
-    int bound = nlines - 1;
+    assert(text_data->buffer);
+    assert(text_data->adds);
+    assert(text_data->line_lens);
+
+    int bound = text_data->nlines - 1;
+
+    while (bound > 0) {
+        for (int j = 0; j < bound; j++) {
+            if (my_strcmp((text_data->adds)[j], (text_data->adds)[j+1],
+                          (text_data->line_lens)[j], (text_data->line_lens)[j+1]) > 0) {
+
+                swap(&((text_data->adds)[j]), &((text_data->adds)[j+1]), sizeof(char**));
+                swap(&((text_data->line_lens)[j]), &((text_data->line_lens)[j+1]), sizeof(int));
+            }
+        }
+        --bound;
+    }
+}
+
+/*void sort_text(const char text[][LINE_LEN], int* inds)
+{
+    int bound = NLINES - 1;
 
     while (bound > 0) {
         for (int j = 0; j < bound; j++) {
@@ -17,11 +39,14 @@ void sort_text(const char text[][line_len], int* inds)
         }
         --bound;
     }
-}
+}*/
 
-int my_strcmp(const char* s1, const char* s2)
+int my_strcmp(const char* s1, const char* s2, int len1, int len2)
 {
-    int curr_char1 = line_len - 1, curr_char2 = line_len - 1;
+    assert(s1);
+    assert(s2);
+
+    int curr_char1 = len1 - 1, curr_char2 = len2 - 1;
 
     while (curr_char1 >= 0 && !isalpha(s1[curr_char1])) {
         curr_char1--;
