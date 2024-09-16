@@ -6,7 +6,7 @@
 #include "Sorting.h"
 #include "OutputColours.h"
 
-void sort_text_adds(TEXTDATA* text_data)
+void sort_text(TEXTDATA* text_data)
 {
     assert(text_data->buffer);
     assert(text_data->adds);
@@ -26,20 +26,6 @@ void sort_text_adds(TEXTDATA* text_data)
         --bound;
     }
 }
-
-/*void sort_text(const char text[][LINE_LEN], int* inds)
-{
-    int bound = NLINES - 1;
-
-    while (bound > 0) {
-        for (int j = 0; j < bound; j++) {
-            if (my_strcmp(text[inds[j]], text[inds[j+1]]) > 0) {
-                swap(&inds[j], &inds[j+1], sizeof(int));
-            }
-        }
-        --bound;
-    }
-}*/
 
 int my_strcmp(const char* s1, const char* s2, int len1, int len2)
 {

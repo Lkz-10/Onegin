@@ -5,9 +5,7 @@
 
 #include "Globals.h"
 
-void sort_text_adds(TEXTDATA* text_data);
-
-void sort_text(const char text[][LINE_LEN], int* inds);
+void sort_text(TEXTDATA* text_data);
 
 int my_strcmp(const char* s1, const char* s2, int len1, int len2);
 

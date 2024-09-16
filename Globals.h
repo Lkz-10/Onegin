@@ -11,8 +11,8 @@ struct TEXTDATA {
     char*  buffer;
     char** adds;
     int*   line_lens;
-};
 
-const int NLINES = 14, LINE_LEN = 42;
+    FILE* ptr_scan;
+};
 
 #endif
