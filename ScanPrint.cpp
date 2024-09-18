@@ -43,7 +43,7 @@ void buf_scan(TEXTDATA* text_data)
 
 void printf_text(TEXTDATA* text_data, const char* file_name)
 {
-    assert(text_data->adds);
+    assert(text_data->lines_data);
 
     FILE* ptr_print = fopen(file_name, "wb");
 
@@ -53,7 +53,7 @@ void printf_text(TEXTDATA* text_data, const char* file_name)
     }
 
     for (int i = 0; i < text_data->nlines; i++) {
-        if (fputs((text_data->adds)[i], ptr_print) == EOF) {
+        if (fputs(((text_data->lines_data)[i]).add, ptr_print) == EOF) {
             fprintf(stderr, RED "Error while writing into file\n" COLOUR_RESET);
             exit(1);
         }
@@ -64,10 +64,10 @@ void printf_text(TEXTDATA* text_data, const char* file_name)
 
 void print_text(TEXTDATA* text_data)
 {
-    assert(text_data->adds);
+    assert(text_data->lines_data);
 
     for (int i = 0; i < text_data->nlines; ++i) {
-        printf("%s", (text_data->adds)[i]);
+        printf("%s", ((text_data->lines_data)[i]).add);
     }
     printf("\n");
 }

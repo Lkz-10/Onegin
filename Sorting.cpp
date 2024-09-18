@@ -9,18 +9,17 @@
 void sort_text(TEXTDATA* text_data)
 {
     assert(text_data->buffer);
-    assert(text_data->adds);
-    assert(text_data->line_lens);
+    assert(text_data->lines_data);
 
     int bound = text_data->nlines - 1;
 
     while (bound > 0) {
         for (int j = 0; j < bound; j++) {
-            if (my_strcmp((text_data->adds)[j], (text_data->adds)[j+1],
-                          (text_data->line_lens)[j], (text_data->line_lens)[j+1]) > 0) {
+            if (my_strcmp((text_data->lines_data)[j].add, (text_data->lines_data)[j+1].add,
+                          ((text_data->lines_data)[j]).line_len, ((text_data->lines_data)[j+1]).line_len) > 0) {
 
-                swap(&((text_data->adds)[j]), &((text_data->adds)[j+1]), sizeof(char**));
-                swap(&((text_data->line_lens)[j]), &((text_data->line_lens)[j+1]), sizeof(int));
+                swap(&(((text_data->lines_data)[j]).add), &(((text_data->lines_data)[j+1]).add), sizeof(char*));
+                swap(&((text_data->lines_data)[j].line_len), &((text_data->lines_data)[j+1].line_len), sizeof(int));
             }
         }
         --bound;
@@ -42,14 +41,9 @@ int my_strcmp(const char* s1, const char* s2, int len1, int len2)
         curr_char2--;
     }
 
-    if (curr_char1 < 0 || curr_char2 < 0) {
-        fprintf(stderr, RED "Error: empty line!\n" COLOUR_RESET);
-        exit(1);
-    }
-
     while (curr_char1 >= 0 && curr_char2 >= 0) {
-        if (s1[curr_char1] > s2[curr_char2]) return  1;
-        if (s2[curr_char2] > s1[curr_char1]) return -1;
+        if (toupper(s1[curr_char1]) != toupper(s2[curr_char2]))
+            return  toupper(s1[curr_char1]) - toupper(s2[curr_char2]);
 
         --curr_char1;
         --curr_char2;
@@ -58,10 +52,7 @@ int my_strcmp(const char* s1, const char* s2, int len1, int len2)
         while (curr_char2 >= 0 && !isalpha(s2[curr_char2])) curr_char2--;
     }
 
-    if (curr_char1 < 0 && curr_char2 < 0) return 0;
-    if (curr_char2 < 0) return 1;
-
-    return -1;
+    return curr_char1 - curr_char2;
 }
 
 void swap(void* a, void* b, size_t sz)
@@ -74,3 +65,5 @@ void swap(void* a, void* b, size_t sz)
 
     free(tmp);
 }
+
+

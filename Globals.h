@@ -2,6 +2,12 @@
 #define __GLOBALS_H__
 
 #include <string.h>
+#include <stdio.h>
+
+struct LINESDATA {
+    char* add;
+    int   line_len;
+};
 
 struct TEXTDATA {
     long   file_sz;
@@ -9,8 +15,8 @@ struct TEXTDATA {
     int    nlines;
 
     char*  buffer;
-    char** adds;
-    int*   line_lens;
+
+    LINESDATA* lines_data;
 
     FILE* ptr_scan;
 };
