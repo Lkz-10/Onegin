@@ -2,15 +2,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "Globals.h"
-#include "Sorting.h"
-#include "ScanPrint.h"
-#include "ArgcCheck.h"
-#include "Make_adds.h"
+#include "Headers.h"
 
-//typedef int (*cmp_type)(void* el1, void* el2);
-
-int cmp(const void* el1, const void* el2);
+void my_qsort (void* arr, size_t num, size_t size, int (*cmp) (const void*, const void*));
 
 int main(int argc, const char* argv[])
 {
@@ -28,11 +22,14 @@ int main(int argc, const char* argv[])
     fill_adds(&text_data);
     assert(text_data.lines_data);
 
+    printf("\nOrigin text:\n\n");
+
     print_text(&text_data);
 
     //sort_text(&text_data);
-    qsort(text_data.lines_data, text_data.nlines, sizeof(LINESDATA), cmp);
+    my_qsort(text_data.lines_data, text_data.nlines, sizeof(LINESDATA), cmp);
 
+    printf("Sorted text:\n\n");
     print_text(&text_data);
     //printf_text(&text_data, argv[2]);
 
@@ -42,8 +39,52 @@ int main(int argc, const char* argv[])
     return 0;
 }
 
-int cmp(const void* el1, const void* el2)
+void my_qsort (void* arr, size_t num, size_t size, int (*cmp) (const void*, const void*))
 {
-    return my_strcmp(((const LINESDATA*) el1)->add,      ((const LINESDATA*) el2)->add,
-                     ((const LINESDATA*) el1)->line_len, ((const LINESDATA*) el2)->line_len);
+    assert(arr);
+    assert(cmp);
+
+    if (num > 1) {
+        char* mid = (char*) arr + (num/2) * size;
+
+        size_t swap_eq = 0, swap_all = 0;
+
+        char* left = (char*) arr;
+        char* right = (char*) arr + (num - 1) * size;
+
+        while (left < right) {
+            while (cmp(left, mid) < 0) {
+                left += size;
+            }
+
+            while (right > left && cmp(right, mid) > 0) {
+                right -= size;
+            }
+
+            if (left < right) {
+                if (cmp(left, right) == 0) {
+                    swap_eq++;
+                    swap_all++;
+
+                    swap(left, right - size, size);
+
+                    right -= size;
+                    mid = right;
+                } else {
+                    if (right == mid) {
+                        mid = left;
+                    } else if (left == mid){
+                        mid = right;
+                    }
+                    swap(left, right, size);
+                    swap_all++;
+                }
+            }
+        }
+        if (swap_eq != swap_all) {
+
+            my_qsort(arr, ((size_t)(mid - (char*) arr)) / size, size, cmp);
+            my_qsort(mid, num - ((size_t)(mid - (char*) arr)) / size, size, cmp);
+        }
+    }
 }

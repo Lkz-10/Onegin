@@ -42,8 +42,9 @@ int my_strcmp(const char* s1, const char* s2, int len1, int len2)
     }
 
     while (curr_char1 >= 0 && curr_char2 >= 0) {
-        if (toupper(s1[curr_char1]) != toupper(s2[curr_char2]))
+        if (toupper(s1[curr_char1]) != toupper(s2[curr_char2])) {
             return  toupper(s1[curr_char1]) - toupper(s2[curr_char2]);
+        }
 
         --curr_char1;
         --curr_char2;
@@ -64,6 +65,13 @@ void swap(void* a, void* b, size_t sz)
     memcpy(b, tmp, sz);
 
     free(tmp);
+
+    /*char* tmp = 0;
+
+    for (size_t i = 0; i < sz; ++i) {
+        tmp = (char*) a + i;
+        *((char*) a + i) = *((char*) b + i);
+        *((char*) b + i) = *tmp;
+
+    }*/
 }
-
-

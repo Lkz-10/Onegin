@@ -16,9 +16,9 @@ void file_size(TEXTDATA* text_data, const char* file_name)
     }
 
     fseek(text_data->ptr_scan, 0, SEEK_END);
-    text_data->file_sz = ftell(text_data->ptr_scan) + 1;
+    text_data->file_sz = ftell(text_data->ptr_scan);
 
-    fseek(text_data->ptr_scan, 0, SEEK_SET);
+    rewind(text_data->ptr_scan);
 }
 
 void buf_scan(TEXTDATA* text_data)
