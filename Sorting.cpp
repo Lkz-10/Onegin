@@ -58,20 +58,12 @@ int my_strcmp(const char* s1, const char* s2, int len1, int len2)
 
 void swap(void* a, void* b, size_t sz)
 {
-    void* tmp = calloc(1, sz);
-
-    memcpy(tmp, a, sz);
-    memcpy(a, b, sz);
-    memcpy(b, tmp, sz);
-
-    free(tmp);
-
-    /*char* tmp = 0;
+    char tmp = 0;
 
     for (size_t i = 0; i < sz; ++i) {
-        tmp = (char*) a + i;
+        tmp = *((char*) a + i);
         *((char*) a + i) = *((char*) b + i);
-        *((char*) b + i) = *tmp;
+        *((char*) b + i) = tmp;
 
-    }*/
+    }
 }
