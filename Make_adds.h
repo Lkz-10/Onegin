@@ -4,8 +4,8 @@
 #include "Globals.h"
 
 /**
-    @brief           Function to fill addresses massive
-    @param text_data structure with text data
+ *   @brief           Function to fill ->addresses massive
+ *   @param text_data structure with text data
  */
 void fill_adds(TEXTDATA* text_data);
 

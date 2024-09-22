@@ -15,10 +15,10 @@ void sort_text(TEXTDATA* text_data)
 
     while (bound > 0) {
         for (int j = 0; j < bound; j++) {
-            if (my_strcmp((text_data->lines_data)[j].add, (text_data->lines_data)[j+1].add,
+            if (my_strcmp((text_data->lines_data)[j].addr, (text_data->lines_data)[j+1].addr,
                           ((text_data->lines_data)[j]).line_len, ((text_data->lines_data)[j+1]).line_len) > 0) {
 
-                swap(&(((text_data->lines_data)[j]).add), &(((text_data->lines_data)[j+1]).add), sizeof(char*));
+                swap(&(((text_data->lines_data)[j]).addr), &(((text_data->lines_data)[j+1]).addr), sizeof(char*));
                 swap(&((text_data->lines_data)[j].line_len), &((text_data->lines_data)[j+1].line_len), sizeof(int));
             }
         }

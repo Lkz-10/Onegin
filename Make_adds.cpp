@@ -8,8 +8,9 @@ void fill_adds(TEXTDATA* text_data)
     assert(text_data->buffer);
 
     text_data->lines_data = (LINESDATA*) calloc(text_data->nlines, sizeof(LINESDATA));
+    assert(text_data->lines_data);
 
-    ((text_data->lines_data)[0].add) = text_data->buffer;
+    ((text_data->lines_data)[0].addr) = text_data->buffer;
 
     int line_num = 1, curr_line_len = 0;
 
@@ -25,7 +26,7 @@ void fill_adds(TEXTDATA* text_data)
             curr_line_len = 0;
 
             if (i != (int) text_data->text_sz - 1) {
-                ((text_data->lines_data)[line_num].add) = &(text_data->buffer)[i] + 1;
+                ((text_data->lines_data)[line_num].addr) = &(text_data->buffer)[i] + 1;
                 line_num++;
             }
         }

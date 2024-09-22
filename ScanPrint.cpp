@@ -95,7 +95,7 @@ int printf_text(TEXTDATA* text_data, const char* file_name)
     }
 
     for (int i = 0; i < text_data->nlines; i++) {
-        if (fputs(((text_data->lines_data)[i]).add, ptr_print) == EOF) {
+        if (fputs(((text_data->lines_data)[i]).addr, ptr_print) == EOF) {
             fprintf(stderr, RED "Error while writing into file\n" COLOUR_RESET);
             return -1;
         }
@@ -111,7 +111,7 @@ void print_text(TEXTDATA* text_data)
     assert(text_data->lines_data);
 
     for (int i = 0; i < text_data->nlines; ++i) {
-        printf("%s", ((text_data->lines_data)[i]).add);
+        printf("%s", ((text_data->lines_data)[i]).addr);
     }
     printf("\n");
 }
