@@ -6,22 +6,16 @@
 
 int main(int argc, const char* argv[])
 {
-    check_argc(argc);
+    if (check_argc(argc) == -1) return -1;
 
     TEXTDATA text_data = {};
 
-    file_size(&text_data, argv[1]);
+    if (read_data(&text_data, argv[1]) == -1) return -1;
 
-    text_data.buffer = (char*) calloc(1, text_data.file_sz);
-
-    buf_scan(&text_data);
     assert(text_data.buffer);
-
-    fill_adds(&text_data);
     assert(text_data.lines_data);
 
-    printf("\nOrigin text:\n\n");
-
+    printf("\nOriginal text:\n\n");
     print_text(&text_data);
 
     //sort_text(&text_data);
@@ -29,7 +23,7 @@ int main(int argc, const char* argv[])
 
     printf("Sorted text:\n\n");
     print_text(&text_data);
-    //printf_text(&text_data, argv[2]);
+    //if (printf_text(&text_data, argv[2]) == -1) return -1;
 
     free(text_data.buffer);
     free(text_data.lines_data);

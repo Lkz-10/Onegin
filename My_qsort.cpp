@@ -12,8 +12,6 @@ void my_qsort (void* arr, size_t num, size_t size, int (*cmp) (const void*, cons
     if (num > 1) {
         char* mid = (char*) arr + (num/2) * size;
 
-        size_t swap_eq = 0, swap_all = 0;
-
         char* left = (char*) arr;
         char* right = (char*) arr + (num - 1) * size;
 
@@ -28,13 +26,7 @@ void my_qsort (void* arr, size_t num, size_t size, int (*cmp) (const void*, cons
 
             if (left < right) {
                 if (cmp(left, right) == 0) {
-                    swap_eq++;
-                    swap_all++;
-
-                    swap(left, right - size, size);
-
-                    right -= size;
-                    mid = right;
+                    left += size;
                 } else {
                     if (right == mid) {
                         mid = left;
@@ -42,14 +34,15 @@ void my_qsort (void* arr, size_t num, size_t size, int (*cmp) (const void*, cons
                         mid = right;
                     }
                     swap(left, right, size);
-                    swap_all++;
                 }
             }
         }
-        if (swap_eq != swap_all) {
+        mid = left;
 
-            my_qsort(arr, ((size_t)(mid - (char*) arr)) / size, size, cmp);
-            my_qsort(mid, num - ((size_t)(mid - (char*) arr)) / size, size, cmp);
-        }
+        if (mid == arr) mid += size;
+
+        my_qsort(arr, ((size_t)(mid - (char*) arr)) / size, size, cmp);
+        my_qsort(mid, num - ((size_t)(mid - (char*) arr)) / size, size, cmp);
+
     }
 }
